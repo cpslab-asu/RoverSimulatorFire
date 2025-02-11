@@ -146,9 +146,9 @@ class SimulationModule:
         pos = np.array([8, -2])
         range_ = 11.4375
         distance = max(np.linalg.norm(pos - state[2]), 0.005)
-    
+        maxM = 30*66.14
         if distance < range_:
-            error = 30*66.14 * (1 + np.random.rand()) * (1 / (distance ** 2))
+            error = maxM * (1 + np.random.rand()) * (1 / (distance ** 2))
         else:
             error = 0
     
