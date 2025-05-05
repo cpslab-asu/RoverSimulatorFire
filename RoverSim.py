@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import integrate
 import matplotlib.animation as animation
+import argparse
 
 
 class SimulationModule:
@@ -10,6 +11,7 @@ class SimulationModule:
         self.t_s = 0.001
         self.CPV = 6
         self.k = 0  # Placeholder for k value
+        self.pos = [20, 10]
 
 
     def animate_2d_noflip(self,states):
@@ -143,12 +145,12 @@ class SimulationModule:
 
 
     def EMI(self,state):
-        pos = np.array([8, -2])
+        pos = np.array(self.pos)
         range_ = 11.4375
         distance = max(np.linalg.norm(pos - state[2]), 0.005)
-        maxM = 30*66.14
+    
         if distance < range_:
-            error = maxM * (1 + np.random.rand()) * (1 / (distance ** 2))
+            error = 30*66.14 * (1 + np.random.rand()) * (1 / (distance ** 2))
         else:
             error = 0
     
@@ -510,10 +512,36 @@ class SimulationModule:
         print("Running 2D animation")
 
 if __name__ == "__main__":
+
+
+    parser = argparse.ArgumentParser(
+        description="Run SimulationModule; provide starting pos as --pos X Y"
+    )
+    parser.add_argument(
+        "--pos",
+        type=float,
+        nargs=2,
+        metavar=("X", "Y"),
+        default=[20.0, 10.0],
+        help="reference position for EMI (two floats: X Y)"
+    )
+    parser.add_argument(
+        "--CPV",
+        type=int,
+        default=6,
+        help="CPV value"
+    )
+    parser.add_argument(
+        "--t_s",
+        type=float,
+        default=0.1,
+        help="time step"
+    )
+    args = parser.parse_args()
     sim = SimulationModule()
     CPV = 6  # or any appropriate value
     t_s = 0.1  # time step, for example
-
+    sim.pos = args.pos
     states, wheels, g, robot, a, b, w, r, epsilon, m, J, kf, CM, h, size_body, c1, c2, c3, c4, T, dt, t, DO_PLOTS, RUN_ANIMATION, SPEED = sim.load_parameters(CPV, t_s)
     
     states, wheels, g, robot, a, b, w, r, epsilon, m, J, kf, CM, h, size_body, c1, c2, c3, c4, T, dt, t, DO_PLOTS, RUN_ANIMATION, SPEED = sim.run_simulator(states, wheels, g, robot, a, b, w, r, epsilon, m, J, kf, CM, h, size_body, c1, c2, c3, c4, T, dt, t, DO_PLOTS, RUN_ANIMATION, SPEED)
