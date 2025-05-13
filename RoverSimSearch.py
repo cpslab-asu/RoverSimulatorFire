@@ -14,7 +14,7 @@ def model(sample: staliro.Sample) -> staliro.Trace[list[float]]:
     t_s = 0.1  # time step, for example
     sim.pos = [sample.static["x"], sample.static["y"]]  # type: ignore
     states, wheels, g, robot, a, b, w, r, epsilon, m, J, kf, CM, h, size_body, c1, c2, c3, c4, T, dt, t, DO_PLOTS, RUN_ANIMATION, SPEED = sim.load_parameters(CPV, t_s)
-    states, wheels, g, robot, a, b, w, r, epsilon, m, J, kf, CM, h, size_body, c1, c2, c3, c4, T, dt, t, DO_PLOTS, RUN_ANIMATION, SPEED = sim.run_simulator(states, wheels, g, robot, a, b, w, r, epsilon, m, J, kf, CM, h, size_body, c1, c2, c3, c4, T, dt, t, DO_PLOTS=0, RUN_ANIMATION=0, SPEED=SPEED)
+    states, wheels, g, robot, a, b, w, r, epsilon, m, J, kf, CM, h, size_body, c1, c2, c3, c4, T, dt, t, DO_PLOTS, RUN_ANIMATION, SPEED = sim.run_simulator(states, wheels, g, robot, a, b, w, r, epsilon, m, J, kf, CM, h, size_body, c1, c2, c3, c4, T, dt, t, CPV, DO_PLOTS=0, RUN_ANIMATION=0, SPEED=SPEED)
 
     return staliro.Trace(times=t, states=states.T)
 
