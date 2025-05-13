@@ -295,7 +295,7 @@ class SimulationModule:
 
         return states, wheels, g, robot, a, b, w, r, epsilon, m, J, kf, CM, h, size_body, c1, c2, c3, c4, T, dt, t, DO_PLOTS, RUN_ANIMATION, SPEED
 
-    def run_simulator(self, states, wheels, g, robot, a, b, w, r, epsilon, m, J, kf, CM, h, size_body, c1, c2, c3, c4, T, dt, t, DO_PLOTS, RUN_ANIMATION, SPEED):
+    def run_simulator(self, states, wheels, g, robot, a, b, w, r, epsilon, m, J, kf, CM, h, size_body, c1, c2, c3, c4, T, dt, t, CPV, DO_PLOTS, RUN_ANIMATION, SPEED):
             # Initialize parameters and other constants
         # parameters
         Omega_1 = 0
@@ -355,6 +355,9 @@ class SimulationModule:
 
             # Roll dynamics
             Critical_vel = np.sqrt(g * (h - w/2) / (R * h / w))
+
+            # FIXME: Make sure this is correct
+            t_s = dt
 
             # Compute the wheels reference velocities using the open loop reference function
             Omega_r, Omega_l, global_turn_right, auto_drive, check_position, update_compass, update_gps, continue_moving, omega, init_position_x, init_position_y, maxX = self.open_loop_reference(t[k], a, b, r, states[:, k], global_turn_right, auto_drive, check_position, prev_omega, update_compass, update_gps, continue_moving, init_position_x, init_position_y, t_s, maxX, v, R, CPV)
@@ -544,7 +547,7 @@ if __name__ == "__main__":
     sim.pos = args.pos
     states, wheels, g, robot, a, b, w, r, epsilon, m, J, kf, CM, h, size_body, c1, c2, c3, c4, T, dt, t, DO_PLOTS, RUN_ANIMATION, SPEED = sim.load_parameters(CPV, t_s)
     
-    states, wheels, g, robot, a, b, w, r, epsilon, m, J, kf, CM, h, size_body, c1, c2, c3, c4, T, dt, t, DO_PLOTS, RUN_ANIMATION, SPEED = sim.run_simulator(states, wheels, g, robot, a, b, w, r, epsilon, m, J, kf, CM, h, size_body, c1, c2, c3, c4, T, dt, t, DO_PLOTS, RUN_ANIMATION, SPEED)
+    states, wheels, g, robot, a, b, w, r, epsilon, m, J, kf, CM, h, size_body, c1, c2, c3, c4, T, dt, t, DO_PLOTS, RUN_ANIMATION, SPEED = sim.run_simulator(states, wheels, g, robot, a, b, w, r, epsilon, m, J, kf, CM, h, size_body, c1, c2, c3, c4, T, dt, t, CPV, DO_PLOTS, RUN_ANIMATION, SPEED)
     #RUN_ANIMATION = 1  # Set animation mode
     #print(states[0,:])
     sim.animate_2d_noflip(states)
